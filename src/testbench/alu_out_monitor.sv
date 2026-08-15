@@ -26,7 +26,7 @@ class alu_out_monitor extends uvm_monitor;
 
   task run_phase(uvm_phase phase);
     forever begin
-      @(vif.out_mon_cb);
+      repeat(4)@(vif.out_mon_cb);
       tx = alu_seq_item::type_id::create("tx");
       tx.ce        = vif.inp_mon_cb.ce;
       tx.mode      = vif.inp_mon_cb.mode;
@@ -44,12 +44,11 @@ class alu_out_monitor extends uvm_monitor;
       tx.G         = vif.out_mon_cb.G;
       tx.E         = vif.out_mon_cb.E;
       tx.L         = vif.out_mon_cb.L;
-     // if(tx.ce && !tx.rst)
-      `uvm_info(get_type_name(),tx.sprint(),UVM_LOW)
+      `uvm_info("OUT_MON",$sformatf("OA=%0h OB=%0h V=%0b CMD=%0h M=%0b CE=%0b",$unsigned(tx.OA),$unsigned(tx.OB),tx.inp_valid,tx.cmd,tx.mode,tx.ce),UVM_LOW)
+      `uvm_info("OUT_MON",$sformatf("RES=%0h ERR=%0b OF=%0b C=%0b G=%0b E=%0b L=%0b",tx.res,tx.err,tx.oflow,tx.cout,tx.G,tx.E,tx.L),UVM_LOW)            
       ap.write(tx);
     end
   endtask
 
 endclass
-
 

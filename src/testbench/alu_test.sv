@@ -30,37 +30,37 @@ class alu_test extends uvm_test;
 endclass
 
 class test_1 extends alu_test;
-	`uvm_component_utils(test_1)
-	alu_seq s;
-	arithmetic_seq s1;
-	logical_seq s2;
+  `uvm_component_utils(test_1)
 
-	function new(string name="test_1", uvm_component parent= null);
-		super.new(name,parent);
-	endfunction 
-	
-	function void build_phase(uvm_phase phase);
-		super.build_phase(phase);
-	endfunction 
-	
-	task run_phase(uvm_phase phase);
-		phase.raise_objection(this);
-		s=alu_seq::type_id::create("s");
-		s1=arithmetic_seq::type_id::create("s");
-		s2=logical_seq::type_id::create("s");
+  reset_seq r;
+  arithmetic_seq a;
+  logical_seq l;
+  random_seq rd;
 
-		//fork 
-	  	    begin
-	       		s.start(env.in_agt.sqr);
-	       		#30;
-	       		s1.start(env.in_agt.sqr);
-			#30;
-	       		s2.start(env.in_agt.sqr);
-	   		#30;
-	  	    end
-		//join
-		#50;
-		phase.drop_objection(this);
-	endtask
+  function new(string name="test_1",uvm_component parent=null);
+    super.new(name,parent);
+  endfunction
+
+  task run_phase(uvm_phase phase);
+    phase.raise_objection(this);
+
+    r=reset_seq::type_id::create("r");
+    a=arithmetic_seq::type_id::create("a");
+    l=logical_seq::type_id::create("l");
+    rd=random_seq::type_id::create("rd");
+
+    begin
+      r.start(env.in_agt.sqr);
+      #20;
+      a.start(env.in_agt.sqr);
+      #20;
+      l.start(env.in_agt.sqr);
+      #20;
+      rd.start(env.in_agt.sqr);
+    end
+
+    #50;
+    phase.drop_objection(this);
+  endtask
 endclass
 

@@ -5,7 +5,7 @@ module ALU_DESIGN #(parameter DW = 8, CW = 4)(INP_VALID,OPA,OPB,CIN,CLK,RST,CMD,
   input CLK,RST,CE,MODE,CIN;
   input [CW-1:0] CMD;
   input [1:0] INP_VALID;
-  output reg [DW+1:0] RES = 9'b000000000;
+  output reg [DW*2-1:0] RES = 'b0;
   output reg COUT = 1'b0;
   output reg OFLOW = 1'b0;
   output reg G = 1'b0;

@@ -24,6 +24,7 @@ function void build_phase(uvm_phase phase);
 endfunction
 
 function void connect_phase(uvm_phase phase);
+	super.connect_phase(phase);
 	if(cfg.input_agent_is_active==UVM_ACTIVE)begin
 		drv.seq_item_port.connect(sqr.seq_item_export);
 	end

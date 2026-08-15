@@ -1,7 +1,5 @@
 
-`define DW 8
-`define CW 4
-
+`include "define.svh"
 interface alu_if(input bit clk);
 
 logic[`DW-1:0]OA;
@@ -29,6 +27,7 @@ clocking inp_mon_cb@(posedge clk);
 	input mode,cin,ce,rst;
 endclocking
 
+
 clocking out_mon_cb@(posedge clk);
 	default input #1 output #1;
 	input OA;
@@ -44,5 +43,4 @@ modport INP_MON(clocking inp_mon_cb);
 modport OUT_MON(clocking out_mon_cb);
 
 endinterface
-
 

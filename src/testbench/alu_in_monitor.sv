@@ -10,11 +10,11 @@ class alu_in_monitor extends uvm_monitor;
 
   function new(string name = "alu_in_monitor", uvm_component parent = null);
     super.new(name,parent);
-    ap = new("ap",this);
   endfunction
 
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
+    ap = new("ap",this);
     if(!uvm_config_db #(alu_config)::get(this,"","alu_config",cfg))
       `uvm_fatal(get_type_name(),"Failed to get alu_config")
   endfunction
@@ -26,7 +26,7 @@ class alu_in_monitor extends uvm_monitor;
 
   task run_phase(uvm_phase phase);
     forever begin
-      @(vif.inp_mon_cb);
+      repeat(4)@(vif.inp_mon_cb);
       tx = alu_seq_item::type_id::create("tx");
       tx.rst       = vif.inp_mon_cb.rst;
       tx.ce        = vif.inp_mon_cb.ce;
@@ -36,8 +36,7 @@ class alu_in_monitor extends uvm_monitor;
       tx.inp_valid = vif.inp_mon_cb.inp_valid;
       tx.OA        = vif.inp_mon_cb.OA;
       tx.OB        = vif.inp_mon_cb.OB;
-      //if(tx.ce && !tx.rst)
-      `uvm_info(get_type_name(),tx.sprint(),UVM_LOW)
+      `uvm_info("IN_MON",$sformatf("OA=%0h OB=%0h V=%0b CMD=%0h M=%0b CE=%0b",$unsigned(tx.OA),$unsigned(tx.OB),tx.inp_valid,tx.cmd,tx.mode,tx.ce),UVM_LOW)      
       ap.write(tx);
     end
   endtask

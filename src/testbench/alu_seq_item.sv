@@ -11,6 +11,7 @@ class alu_seq_item extends uvm_sequence_item;
   bit rst,err,oflow,cout,G,E,L;
 
 	`uvm_object_utils_begin(alu_seq_item)
+		`uvm_field_int(rst,UVM_ALL_ON)
 		`uvm_field_int(OA,UVM_ALL_ON)
 		`uvm_field_int(OB,UVM_ALL_ON)
 		`uvm_field_int(inp_valid,UVM_ALL_ON)
@@ -61,6 +62,5 @@ class alu_seq_item extends uvm_sequence_item;
  function new(string name="alu_seq_item");
 	super.new(name);
  endfunction
-
 endclass 
 

@@ -11,7 +11,7 @@ class alu_scoreboard extends uvm_scoreboard;
   alu_seq_item inp_tr;
   alu_seq_item out_tr;
   alu_seq_item exp_tr;
-
+  
   int match;
   int mismatch;
 
@@ -41,7 +41,6 @@ class alu_scoreboard extends uvm_scoreboard;
 	   out_tr = alu_seq_item::type_id::create("out_tr");
  	   inp_fifo.get(inp_tr);
 	   exp_tr.copy(inp_tr);
-	   //$cast(exp_tr, inp_tr.clone());
 	   ref_model(exp_tr);
 	   out_fifo.get(out_tr);
 	   validate_output();
@@ -51,14 +50,16 @@ class alu_scoreboard extends uvm_scoreboard;
   virtual task validate_output();
  	if(!exp_tr.rst && exp_tr.compare(out_tr))begin
  	   match++;
-	   `uvm_info(get_type_name(),"COMPARE PASSED",UVM_LOW);
- 	end
+           `uvm_info(" [SCB] ",$sformatf("PASSED  EXP RES=%0h ACT RES=%0h CMD=%0h",exp_tr.res,out_tr.res,exp_tr.cmd),UVM_LOW)
+	   $display("-------------------------------------------------------------------");
+	end
  	else begin
 	   mismatch++;
-	   `uvm_error(get_type_name(),$sformatf("\nEXPECTED %s \nACTUAL %s",exp_tr.sprint(), out_tr.sprint()));
- 	end
+           `uvm_error(" [SCB] ",$sformatf("FAIL  CMD=%0h EXP: RST=%0h ACT: RST=%0h",exp_tr.cmd,exp_tr.res,out_tr.res)) 
+	   $display("-------------------------------------------------------------------");	
+	end
   endtask
-
+  
   virtual task ref_model(alu_seq_item t);
 
      if(t.rst) begin

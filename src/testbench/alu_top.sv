@@ -23,5 +23,5 @@ module alu_top();
 		forever 
 		   #5 clk=~clk;
 	end
-
 endmodule
+

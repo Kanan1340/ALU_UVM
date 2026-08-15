@@ -47,13 +47,15 @@ class alu_driver extends uvm_driver #(alu_seq_item);
     vif.drv_cb.OB        <= req.OB;
     vif.drv_cb.cin       <= req.cin;
   endtask
-  
+
   task run_phase(uvm_phase phase);
     reset_dut();
     forever begin
       seq_item_port.get_next_item(req);
       drive();
-     `uvm_info(get_type_name(),req.sprint(),UVM_LOW)
+      $display("-------------------------------------------------------------------");
+      `uvm_info(" [DRV] ",$sformatf("RST:%0b OA=%0h OB=%0h V=%0b CMD=%0h M=%0b CE=%0b CIN=%0b",req.rst,$unsigned(req.OA),$unsigned(req.OB),req.inp_valid,req.cmd,req.mode,req.ce,req.cin),UVM_LOW)              	
+      repeat(3)@(vif.drv_cb);
       seq_item_port.item_done();
     end
   endtask
